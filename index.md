@@ -11,7 +11,7 @@ hero:
       link: /tutorial/quick-start
     - theme: alt
       text: API Reference
-      link: /api/reference
+      link: /api/overview
 
 features:
   - title: Simple

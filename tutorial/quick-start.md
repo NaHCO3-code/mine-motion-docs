@@ -22,21 +22,19 @@ MineMotion 是一个轻量级的动画库，可以用于创造各种动画效果
 
 ### 使用 npm 安装
 
-运行
+在终端运行
 
 ```bash
 npm install @dao3fun/mine-motion
 ```
 
-## Hello World
+## 开始
 
-这并非真的输出一个 `Hello, world`，而是 MineMotion 的一个最基本的示例。
+在这个示例中，我们将会在画面中创建一个正方形，并且在 1 秒内将正方形从 (0, 0) 移动到 (100, 100)。
 
-在这个示例中，我们创建了一个正方形，并且在 1 秒内将正方形从 (0, 0) 移动到 (100, 100)。
+首先，我们需要创建 UiScreen 和 UiBox，并设置它们的属性。
 
 ```typescript
-import { MineEases, MineMotion } from "@dao3fun/mine-motion";
-
 // 创建 UiScreen
 const defaultScreen = UiScreen.create();
 
@@ -46,36 +44,58 @@ box.backgroundColor.r = 200;
 box.size.offset.x = 100;
 box.size.offset.y = 100;
 box.parent = defaultScreen;
-
-// 应用动画
-MineMotion.animate(box.position.offset, [
-  {value: {x: 0, y: 0}, duration: 0},
-  {value: {x: 100, y: 100}, duration: 1000, ease: MineEases.easeInOut}
-], {
-  delay: 0,
-  speed: 1
-})
 ```
 
-那么这段代码中，我们究竟干了什么呢？
+现在你应该会在画面中看到一个红色的正方形，并且它的位置为 (0, 0)。接下来，我们要使用 Mine Motion 让这个正方形动起来。
 
-显然，最后四行代码是创建动画的关键。我们使用 `MineMotion.animate` 函数来创建动画，第一个参数是动画要改变的属性，第二个参数是动画的关键帧数据，第三个参数是动画配置。
+为了使用 Mine Motion，我们需要先导入 `MineMotion` 对象，用于调用 Mine Motion 库中的方法；以及 `MineEases`，里面包含了一些常用的动画缓动函数，可以让动画更加平滑。
 
-我们为第二个参数传入了一个列表，其中每一项都是一个关键帧的数据：
+```typescript
+import { MineEases, MineMotion } from "@dao3fun/mine-motion";
+```
 
-- value 属性：表示关键帧的值。只有在这个属性中设置的值才会被应用到动画中。
-- duration 属性：表示从上一个状态到当前帧的状态花费的时间。在上面的例子中，第一帧的 `duration` 是0，表示从初始状态到第一帧的状态花费的时间为0毫秒，也就是动画开始直接切换到位置为 (0, 0) 的状态；第二帧的 `duration` 是1000，表示从第一帧到第二帧的状态花费的时间为1000毫秒，也就是动画从位置为 (0, 0) 切换到位置为 (100, 100) 的状态需要1秒。
-- ease 属性：表示动画的缓动函数，默认为线性。内置的缓动函数包括但不限于 `linear`, `sine`, `easeIn` 等，你也可以编写自己的缓动函数实现不同的动画效果。
+接下来，我们使用 `MineMotion.animate` 来创建一个动画，并传入动画的关键帧数据。
+
+```typescript
+// 应用动画
+MineMotion.animate(
+  box.position.offset, 
+  [
+    { value: {x: 0, y: 0}, duration: 0 },
+    { value: {x: 100, y: 100}, duration: 1000, ease: MineEases.easeInOut }
+  ], 
+  {
+    delay: 0,
+    speed: 1
+  }
+)
+```
+
+显然，最后几行代码是创建动画的关键。我们往 `MineMotion.animate` 里传入了三个参数：第一个参数是动画要改变的属性，第二个参数是动画的关键帧数据，第三个参数是动画的一些配置，包括速度和延迟。
+
+关键帧数据是一个数组，数组中的每个对象都是一个关键帧，包含三个属性：
+
+**value** 表示每个关键帧时，对象应该处于什么状态。
+
+在上面的例子中，第一个关键帧的 `value` 是 `{ x: 0, y: 0 }`，表示正方形位于 `(0, 0)`；第二个关键帧的 `value` 是 `{ x: 100, y: 100 }`，表示正方形位于 `(100, 100)`。
+
+**duration** 表示从上一个状态到当前状态的状态花费的时间。
+
+在上面的例子中，第一帧的 `duration` 是 `0`，表示从初始状态到第一帧的状态花费的时间为 0 毫秒，也就是动画开始时的位置应为 `(0, 0)`；第二帧的 `duration` 是 1000，表示从第一帧到第二帧的状态花费的时间为 `1000` 毫秒，也就是方块从位置为 `(0, 0)` 切换到位置为 `(100, 100)` 的状态需要1秒。在这一秒内，Mine Motion 会自动创建很多中间状态，用于实现方块位置的平滑改变，也就是动画。
+
+**ease** 表示动画的缓动函数，默认为线性。
+
+这个参数描述了 Mine Motion 具体如何创建动画的中间状态。内置的缓动函数包括但不限于 `linear`, `sine`, `easeIn` 等，你也可以编写自己的缓动函数实现不同的动画效果。
 
 在第三个参数中，我们传入了关于这个动画的一些配置，例如开始前延迟的时间，动画速度等。这个参数并非必须，也就是可以不传入第三个参数，默认的配置为 `{delay: 0, speed: 1}`。
 
-你可以试试改变上面例子中的一些参数体会 MineMotion 的一些功能。
+你可以试试改变上面例子中的一些参数具体的值，比如增加关键帧，改变缓动函数等。
 
-## Timeline
+## Timeline(时间线)
 
-MineMotion 最核心的功能就在于 `Timeline`。使用 Timeline，你可以管理多个动画，并让它们协同工作。
+Mine Motion 最核心的功能就在于 **Timeline**。使用 Timeline，你可以轻松管理多个动画，并让它们协同工作。
 
-以下是 Timeline 的一个简单示例：
+以下是 Timeline 的一个简单示例。
 
 ```typescript
 import { MineEases, MineTimeline } from "@dao3fun/mine-motion";
@@ -130,11 +150,11 @@ tl.animate(box3.position.offset, [
 tl.run();
 ```
 
-尽管动画本身比较复杂，但是通过 Timeline，我们成功将三个动画组合在一起，并能轻松安排它们之间的时间关系。
+这个动画看上去很复杂，我们需要按照一定的顺序改变多个不同对象的属性。但是通过 Timeline，我们成功将三个动画组合在一起，并能轻松安排它们之间的时间关系。
 
 在上面的例子中，我们首先创建了一个 `MineTimeline` 对象，并使用了三次 `tl.animate` 方法对于三个正方形分别编写了动画。 `tl.animate` 的调用方法和 `MineMotion.animate` 相差不大，只是多了个 `offset` 参数，这个参数表示动画在时间线上的开始时间，默认为 `0`。接着，我们使用了 `tl.run` 方法来启动动画。
 
-另外，我们可以使用 `tl.seek` 方法来直接跳转到动画的某个时间点（不播放动画），改变 `tl.speed` 以改变动画的速度，以及 `tl.pause` 以停止动画。
+另外，我们可以使用 `tl.seek` 方法来直接跳转到动画的某个时间点（不播放动画），改变 `tl.speed` 以改变动画的速度，以及 `tl.pause` 以停止动画。Timeline 的更多方法，请查看 API 文档。
 
 ## 数据驱动
 
