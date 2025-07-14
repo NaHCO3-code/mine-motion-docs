@@ -16,7 +16,7 @@ hero:
 features:
   - title: Simple
     details: Create stunning animations in a few simple steps
-  - title: Lighweight
+  - title: Lightweight
     details: Write less, explore more
   - title: Powerful
     details: Handling of complex animations via Timeline API and MineHandler API
