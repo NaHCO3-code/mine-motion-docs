@@ -1,0 +1,1 @@
+import{_ as i,c as a,o as n,ae as h}from"./chunks/framework.DaxMzASw.js";const g=JSON.parse('{"title":"类型和常量","description":"","frontmatter":{},"headers":[],"relativePath":"api/types.md","filePath":"api/types.md"}'),t={name:"api/types.md"};function k(p,s,l,e,r,d){return n(),a("div",null,s[0]||(s[0]=[h("",50)]))}const y=i(t,[["render",k]]);export{g as __pageData,y as default};
